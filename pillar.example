@@ -19,17 +19,22 @@ network:
       type: inet
       address: 192.168.1.130
       netmask: 24
+      gateway: 192.168.1.1
+      broadcast: 192.168.1.255
     - name: 'eth0'
       comment: "test interface"
       proto: static
       type: inet6
-      address: fd66::1
+      address: fd66::130
       netmask: 64
+      gateway: fd66::1
     - name: 'br0'
       comment: 'This is a bridge'
       proto: static
       address: 192.168.2.130
       netmask: 24
+      gateway: 192.168.2.1
+      broadcast: 192.168.1.255
       options:
         - bridge_ports eth0
 

@@ -21,7 +21,14 @@ iface {{ interface.name }} {{ interface.type }} {{ interface.proto }}
 {%- if interface.address is defined %}
   address {{ interface.address }}
   netmask {{ interface.netmask }}
+  {%- if interface.gateway is defined %}
+  gateway {{ interface.gateway }}
+  {%- if interface.broadcast is defined %}
+  broadcast {{ interface.broadcast }}
+  {%- endif %}
+  {%- else %}
   up /etc/network/routes
+  {%- endif %}
 {%- endif %}  
 
 {%- if interface.options is defined %}

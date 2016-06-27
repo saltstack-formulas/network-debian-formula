@@ -10,7 +10,7 @@ network_remove_resolvconf:
   pkg.removed:
     - name: resolvconf
 
-
+{%- if salt['pillar.get']('network:interfaces') %}
 /etc/network/interfaces:
   file.managed:
     - user: root
@@ -20,7 +20,9 @@ network_remove_resolvconf:
     - source:   salt://network-debian/files/interfaces.jinja
     - context:
       interfaces: {{ pillar.network.get('interfaces',{}) }}
+{% endif %}
 
+{%- if salt['pillar.get']('network:routes') %}
 /etc/network/routes:
   file.managed:
     - user: root
@@ -31,7 +33,9 @@ network_remove_resolvconf:
     - context:
       interfaces: {{ pillar.network.get('interfaces',{}) }}
       routes: {{ pillar.network.get('routes',{}) }}
+{% endif %}
 
+{%- if salt['pillar.get']('network:dnsserver') %}
 /etc/resolv.conf:
   file.managed:
     - user: root
@@ -43,5 +47,5 @@ network_remove_resolvconf:
       dnsserver: {{ pillar.network.get('dnsserver',[]) }}
       dnsdomain: {{ pillar.network.get('dnsdomain', 'localnet') }}
       dnssearch: {{ pillar.network.get('dnssearch', []) }}
-
+{% endif %}
 
