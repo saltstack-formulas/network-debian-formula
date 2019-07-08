@@ -6,6 +6,7 @@
 
 # remove resolvconf package - we want to control resolv.conf ourselves.
 #
+{%- if 'network' in pillar %}
 network_remove_resolvconf:
   pkg.removed:
     - name: resolvconf
@@ -43,5 +44,4 @@ network_remove_resolvconf:
       dnsserver: {{ pillar.network.get('dnsserver',[]) }}
       dnsdomain: {{ pillar.network.get('dnsdomain', 'localnet') }}
       dnssearch: {{ pillar.network.get('dnssearch', []) }}
-
-
+{%- endif %}
