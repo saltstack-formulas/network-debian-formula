@@ -11,7 +11,9 @@ network_remove_resolvconf:
   pkg.removed:
     - name: resolvconf
 
-
+{%- set network = salt['pillar.get']('network', {}) %}
+{%- set interfaces = network.get('interfaces', {}) %}
+{%- if not interfaces.get('keep', false) %}
 /etc/network/interfaces:
   file.managed:
     - user: root
@@ -21,6 +23,7 @@ network_remove_resolvconf:
     - source:   salt://network-debian/files/interfaces.jinja
     - context:
       interfaces: {{ pillar.network.get('interfaces',{}) }}
+{%- endif %}
 
 /etc/network/routes:
   file.managed:
