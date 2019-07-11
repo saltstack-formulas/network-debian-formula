@@ -13,7 +13,7 @@ network_remove_resolvconf:
 
 {%- set network = salt['pillar.get']('network', {}) %}
 {%- set interfaces = network.get('interfaces', {}) %}
-{%- if not interfaces.get('keep', false) %}
+{%- if not interfaces is mapping or not interfaces.get('keep', false) %}
 /etc/network/interfaces:
   file.managed:
     - user: root
